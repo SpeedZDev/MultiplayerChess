@@ -1,8 +1,13 @@
 
 
-document.getElementById("A1").onclick = PrintID;
+let ChessBoardCells = document.querySelectorAll(".ChessBoardCell")
 
-function PrintID()
+for (let i = 0; i < ChessBoardCells.length; i++) {
+    ChessBoardCells[i].addEventListener("click", PrintID)
+    
+}
+
+function PrintID(element)
 {
-    console.log("Clicked A1!")
+    console.log(element)
 }
