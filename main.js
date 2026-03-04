@@ -8,6 +8,7 @@ class ChessPiece{
     BoardPosition = "";
     DisplayImage = "";
     ColorType = ""
+    MoveCount = 0;
     constructor(piecetype, Boardposition, DisplayImage, Colortype)
     {
         this.PieceType = piecetype;
@@ -138,6 +139,7 @@ function MovePiece(TargetedTile)
 {
     PrevSelectedTile.removeChild(document.querySelector(`#${PrevSelectedTile.id} img`));
     PieceSelected.BoardPosition = TargetedTile.id;
+    PieceSelected.MoveCount += 1
     Tileimage = document.createElement("img");
     Tileimage.src = PieceSelected.DisplayImage;
     TargetedTile.appendChild(Tileimage)
