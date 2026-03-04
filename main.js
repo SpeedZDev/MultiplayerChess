@@ -97,16 +97,14 @@ function DrawBoard()
     document.querySelector("#H7 img").src = H7Pawn.DisplayImage;
 }
 
+PrevSelectedTile = null
 for (let i = 0; i < ChessBoardCells.length; i++) {
     ChessBoardCells[i].addEventListener("click", function()
     {
        
         
-        if(PieceSelected && this.querySelector(".ChessPiece") === null)
+        if(PieceSelected && document.querySelector(`#${this.id} img`) == null)
         {
-            if(PieceSelected.src.includes("Pawn")){
-                
-            }
             console.log("Moving Piece To " + this.id)
             MovePiece(this)
             
@@ -116,6 +114,7 @@ for (let i = 0; i < ChessBoardCells.length; i++) {
         else
         {
             SelectPiece(this)
+            PrevSelectedTile = ChessBoardCells[i]
         }
     
     })
@@ -123,11 +122,24 @@ for (let i = 0; i < ChessBoardCells.length; i++) {
     
 }
 
-function SelectPiece(element)
+function SelectPiece(SelectedTile)
 {
-    
+    for(let i = 0; i < PiecesOnBoard.length; i++)
+    {
+        if(PiecesOnBoard[i].BoardPosition == SelectedTile.id)
+        {
+            PieceSelected = PiecesOnBoard[i]
+            console.log(`Piece Selected ${PieceSelected.PieceType}`)
+        }
+    }
 }   
 
-function MovePiece(TargetCell){
-    
+function MovePiece(TargetedTile)
+{
+    PrevSelectedTile.removeChild(document.querySelector(`#${PrevSelectedTile.id} img`));
+    PieceSelected.BoardPosition = TargetedTile.id;
+    Tileimage = document.createElement("img");
+    Tileimage.src = PieceSelected.DisplayImage;
+    TargetedTile.appendChild(Tileimage)
+
 }
