@@ -8,13 +8,14 @@ class ChessPiece{
     BoardPosition = "";
     DisplayImage = "";
     ColorType = ""
-    MoveCount = 0;
+    MoveCount;
     constructor(piecetype, Boardposition, DisplayImage, Colortype)
     {
         this.PieceType = piecetype;
         this.BoardPosition = Boardposition; 
         this.DisplayImage = DisplayImage;
         this.ColorType = Colortype
+        this.MoveCount = 0;
     }
 }
 
@@ -106,8 +107,8 @@ for (let i = 0; i < ChessBoardCells.length; i++) {
         
         if(PieceSelected && document.querySelector(`#${this.id} img`) == null)
         {
-            console.log("Moving Piece To " + this.id)
-            MovePiece(this)
+            AttempToMovePiece(this)
+            
             
             PieceSelected = null
 
@@ -135,13 +136,55 @@ function SelectPiece(SelectedTile)
     }
 }   
 
-function MovePiece(TargetedTile)
+function MovePiece(PrevSelTile, targetTile, pieceselected)
 {
-    PrevSelectedTile.removeChild(document.querySelector(`#${PrevSelectedTile.id} img`));
-    PieceSelected.BoardPosition = TargetedTile.id;
-    PieceSelected.MoveCount += 1
-    Tileimage = document.createElement("img");
-    Tileimage.src = PieceSelected.DisplayImage;
-    TargetedTile.appendChild(Tileimage)
+   PrevSelTile.removeChild(document.querySelector(`#${PrevSelTile.id} img`));
+   pieceselected.BoardPosition = targetTile.id;
+   pieceselected.MoveCount += 1;
+   Tileimage = document.createElement("img");
+   Tileimage.src = pieceselected.DisplayImage;
+   targetTile.appendChild(Tileimage);
+}
+
+function AttempToMovePiece(TargetedTile)
+{
+    if(PieceSelected.PieceType == "Pawn" && PieceSelected.BoardPosition.charAt(0) === TargetedTile.id.charAt(0))
+    {
+        console.log("Valid Row")
+        if(PieceSelected.MoveCount == 0)
+        {
+            if(Number(TargetedTile.id.charAt(1)) === Number(PieceSelected.BoardPosition.charAt(1)) + 1)
+            {
+                MovePiece(PrevSelectedTile, TargetedTile, PieceSelected)
+
+                
+                
+            }
+
+            if(Number(TargetedTile.id.charAt(1)) === Number(PieceSelected.BoardPosition.charAt(1)) + 2)
+            {
+                console.log("Moved 1 ");
+                PrevSelectedTile.removeChild(document.querySelector(`#${PrevSelectedTile.id} img`));
+                PieceSelected.BoardPosition = TargetedTile.id;
+                PieceSelected.MoveCount += 1;
+                Tileimage = document.createElement("img");
+                Tileimage.src = PieceSelected.DisplayImage;
+                 TargetedTile.appendChild(Tileimage);
+            }
+            
+        }
+        
+        if(PieceSelected.MoveCount != 0 && Number(TargetedTile.id.charAt(1)) === Number(PieceSelected.BoardPosition.charAt(1)) + 1)
+        {
+            console.log("Matched");
+            PrevSelectedTile.removeChild(document.querySelector(`#${PrevSelectedTile.id} img`));
+            PieceSelected.BoardPosition = TargetedTile.id;
+            PieceSelected.MoveCount += 1;
+            Tileimage = document.createElement("img");
+            Tileimage.src = PieceSelected.DisplayImage;
+            TargetedTile.appendChild(Tileimage);
+        }
+    }
+    
 
 }
